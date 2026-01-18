@@ -7,9 +7,10 @@ A free, open-source tool for creating professional email signatures. Works entir
 ## Features
 
 - **Easy to use** - Simple form-based interface with live preview
-- **Customizable** - Colors, layouts, logo options, and separator styles
+- **Customizable** - Colors, fonts, layouts, logo options, and separator styles
+- **Company templates** - Save and load design settings to maintain brand consistency
 - **Responsive** - Works on desktop, tablet, and mobile
-- **Dark mode** - For the app interface
+- **Dark mode** - For the app interface, plus optional signature backgrounds for dark email clients
 - **Preview backgrounds** - Test how your signature looks in light and dark email clients
 - **Bulk creation** - Generate signatures for your whole team from a CSV file
 - **One-click copy** - Paste directly into your email client
@@ -43,20 +44,22 @@ cd email-signature-express
 
 1. Fill in your information in the form (only Name is required)
 2. Add your company logo via URL or file upload
-3. Customize colors and layout in the Design Options section
-4. Preview your signature on both light and dark backgrounds
-5. Click **Copy Signature**
-6. Open your email client's signature settings and paste
+3. Add optional fields: department, mobile phone, calendar/booking link
+4. Customize colors, fonts, and layout in the Design Options section
+5. Preview your signature on both light and dark backgrounds
+6. Click **Copy Signature**
+7. Open your email client's signature settings and paste
+8. Optionally, save your design as a **Company Template** for reuse
 
 ### Creating Signatures in Bulk
 
 1. Switch to the **Bulk Create** tab
-2. Design your company template (logo, colors, layout)
+2. Design your template (logo, colors, fonts) or **Load Template** from a saved file
 3. Click **Download CSV Template**
 4. Fill in employee information in Excel or Google Sheets
-5. Save and upload the completed CSV
-6. Review all generated signatures
-7. Click **Download All as ZIP** to get individual HTML files
+5. Save and upload the completed CSV (or paste directly from your spreadsheet)
+6. Review all generated signatures with search/filter
+7. Click **Download All as ZIP** to get individual HTML files, or **Download Preview Page** to get a single HTML file with all signatures
 
 ## Importing Your Signature
 
@@ -95,6 +98,9 @@ After copying your signature, paste it into your email client:
 | Title/Company Color | Color for title, company, and contact info |
 | Link Color | Color for website and email links |
 | Separator Style | Pipe (\|), Bullet (•), Dash (—), or None |
+| Font Family | Arial, Helvetica, Georgia, Times New Roman, Verdana, or Tahoma |
+| Icon Style | Solid (single color) or Brand (original platform colors) |
+| Dark Mode Background | Optional background color to ensure readability in dark email clients |
 
 ## Supported Social Platforms
 
@@ -154,9 +160,10 @@ email-signature-express/
 │   ├── csv-handler.js       # CSV parsing
 │   ├── formatters.js        # Phone/URL formatting
 │   ├── utils.js             # Utilities
+│   ├── branded-icons.js     # Brand-colored social icons (base64)
 │   └── jszip.min.js         # ZIP library
 ├── assets/
-│   └── icons/          # Social media icons
+│   └── icons/          # Social media icons (PNG)
 └── templates/
     └── signature-template.csv
 ```
