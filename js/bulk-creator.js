@@ -926,7 +926,7 @@ const BulkCreator = {
         const index = parseInt(btn.dataset.index);
         const html = SignatureRenderer.render(this.employees[index], this.designOptions);
         Utils.copyToClipboard(html).then(success => {
-          Utils.showToast(success ? 'Signature copied!' : 'Failed to copy', success ? 'success' : 'error');
+          Utils.showToast(success ? 'Signature copied!' : 'Failed to copy', success ? 'success' : 'error', success ? 4000 : 3000, success);
         });
       });
     });

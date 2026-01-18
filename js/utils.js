@@ -62,8 +62,9 @@ const Utils = {
    * @param {string} message - Message to display
    * @param {string} type - Toast type ('success', 'error')
    * @param {number} duration - Duration in ms (default: 3000)
+   * @param {boolean} showCoffee - Show coffee link (default: false)
    */
-  showToast(message, type = 'success', duration = 3000) {
+  showToast(message, type = 'success', duration = 3000, showCoffee = false) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
 
@@ -73,6 +74,11 @@ const Utils = {
     toastMessage.textContent = message;
     toast.className = 'toast ' + type;
 
+    // Show or hide coffee link
+    if (showCoffee) {
+      toast.classList.add('show-coffee');
+    }
+
     // Show toast
     requestAnimationFrame(() => {
       toast.classList.add('visible');
@@ -81,6 +87,7 @@ const Utils = {
     // Hide after duration
     setTimeout(() => {
       toast.classList.remove('visible');
+      toast.classList.remove('show-coffee');
     }, duration);
   },
 

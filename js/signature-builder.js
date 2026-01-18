@@ -1160,7 +1160,7 @@ const SignatureBuilder = {
     const success = await Utils.copyToClipboard(this.currentHtml);
 
     if (success) {
-      Utils.showToast('Signature copied! Ready to paste into your email client.', 'success');
+      Utils.showToast('Signature copied! Ready to paste into your email client.', 'success', 4000, true);
     } else {
       Utils.showToast('Failed to copy. Please try again.', 'error');
     }

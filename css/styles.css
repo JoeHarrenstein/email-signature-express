@@ -127,6 +127,43 @@ textarea,
   margin: 0;
 }
 
+/* Buy Me a Coffee Link */
+.coffee-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #ffdd00;
+  background: #1a1a2e;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.coffee-link:hover {
+  background: #2d2d4a;
+  transform: translateY(-1px);
+}
+
+.coffee-link:active {
+  transform: translateY(0);
+}
+
+.coffee-icon {
+  font-size: 14px;
+}
+
+[data-theme="dark"] .coffee-link {
+  background: #ffdd00;
+  color: #1a1a2e;
+}
+
+[data-theme="dark"] .coffee-link:hover {
+  background: #ffe94d;
+}
+
 /* Theme Toggle */
 .theme-toggle {
   display: flex;
@@ -608,6 +645,27 @@ select {
 
 .toast-message {
   color: var(--text-primary);
+}
+
+.toast-coffee-link {
+  display: none;
+  margin-left: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #1a1a2e;
+  background: #ffdd00;
+  border-radius: 4px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.toast-coffee-link:hover {
+  background: #ffe94d;
+}
+
+.toast.show-coffee .toast-coffee-link {
+  display: inline-flex;
 }
 
 /* Modal */
