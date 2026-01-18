@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free email signature generator. Create professional signatures for Gmail, Outlook, and Apple Mail. No account needed, runs in your browser.">
+  <title>Email Signature Generator - Create Professional Signatures Free</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Skip Link for keyboard users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="container">
+    <header class="header" role="banner">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="title">Email Signature Generator</h1>
+          <p class="subtitle">Create professional email signatures in seconds</p>
+        </div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="theme-icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content" id="main-content" role="main" aria-label="Email signature builder">
+      <!-- Mode Tabs -->
+      <div class="mode-tabs" role="tablist" aria-label="Creation mode">
+        <button class="mode-tab active" role="tab" aria-selected="true" aria-controls="panel-single" data-mode="single" id="tab-single">
+          Create Signature
+        </button>
+        <button class="mode-tab" role="tab" aria-selected="false" aria-controls="panel-bulk" data-mode="bulk" id="tab-bulk">
+          Bulk Create
+        </button>
+      </div>
+
+      <!-- Single Signature Mode -->
+      <div class="mode-panel active" id="panel-single" role="tabpanel" aria-labelledby="tab-single">
+        <div class="builder-layout">
+          <!-- Form Panel -->
+          <section class="form-panel card" aria-label="Signature form">
+          <form id="signature-form" aria-label="Signature information">
+            <!-- Personal Information -->
+            <fieldset class="form-section">
+              <legend class="section-header">Personal Information</legend>
+
+              <div class="form-group">
+                <label for="name">Name <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+                  <button type="button" class="clear-button" aria-label="Clear name">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">Title</label>
+                <div class="input-wrapper">
+                  <input type="text" id="title" name="title" placeholder="Marketing Manager">
+                  <button type="button" class="clear-button" aria-label="Clear title">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="department">Department</label>
+                <div class="input-wrapper">
+                  <input type="text" id="department" name="department" placeholder="Marketing">
+                  <button type="button" class="clear-button" aria-label="Clear department">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrapper">
+                  <input type="email" id="email" name="email" placeholder="jane@company.com">
+                  <button type="button" class="clear-button" aria-label="Clear email">&times;</button>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Contact Details -->
+            <fieldset class="form-section">
+              <legend class="section-header">Contact Details</legend>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="phone" name="phone" placeholder="5551234567">
+                    <button type="button" class="clear-button" aria-label="Clear phone">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="fax">Fax</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="fax" name="fax" placeholder="5551234568">
+                    <button type="button" class="clear-button" aria-label="Clear fax">&times;</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="mobile">Mobile Phone</label>
+                <div class="input-wrapper">
+                  <input type="text" id="mobile" name="mobile" placeholder="5559876543">
+                  <button type="button" class="clear-button" aria-label="Clear mobile">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="address1">Address Line 1</label>
+                <div class="input-wrapper">
+                  <input type="text" id="address1" name="address1" placeholder="123 Main Street">
+                  <button type="button" class="clear-button" aria-label="Clear address">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="address2">Address Line 2</label>
+                <div class="input-wrapper">
+                  <input type="text" id="address2" name="address2" placeholder="Suite 400">
+                  <button type="button" class="clear-button" aria-label="Clear address 2">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="city" name="city" placeholder="Minneapolis">
+                    <button type="button" class="clear-button" aria-label="Clear city">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group form-group-small">
+                  <label for="state">State</label>
+                  <select id="state" name="state">
+                    <option value="">--</option>
+                    <option value="AL">AL</option>
+                    <option value="AK">AK</option>
+                    <option value="AZ">AZ</option>
+                    <option value="AR">AR</option>
+                    <option value="CA">CA</option>
+                    <option value="CO">CO</option>
+                    <option value="CT">CT</option>
+                    <option value="DE">DE</option>
+                    <option value="FL">FL</option>
+                    <option value="GA">GA</option>
+                    <option value="HI">HI</option>
+                    <option value="ID">ID</option>
+                    <option value="IL">IL</option>
+                    <option value="IN">IN</option>
+                    <option value="IA">IA</option>
+                    <option value="KS">KS</option>
+                    <option value="KY">KY</option>
+                    <option value="LA">LA</option>
+                    <option value="ME">ME</option>
+                    <option value="MD">MD</option>
+                    <option value="MA">MA</option>
+                    <option value="MI">MI</option>
+                    <option value="MN">MN</option>
+                    <option value="MS">MS</option>
+                    <option value="MO">MO</option>
+                    <option value="MT">MT</option>
+                    <option value="NE">NE</option>
+                    <option value="NV">NV</option>
+                    <option value="NH">NH</option>
+                    <option value="NJ">NJ</option>
+                    <option value="NM">NM</option>
+                    <option value="NY">NY</option>
+                    <option value="NC">NC</option>
+                    <option value="ND">ND</option>
+                    <option value="OH">OH</option>
+                    <option value="OK">OK</option>
+                    <option value="OR">OR</option>
+                    <option value="PA">PA</option>
+                    <option value="RI">RI</option>
+                    <option value="SC">SC</option>
+                    <option value="SD">SD</option>
+                    <option value="TN">TN</option>
+                    <option value="TX">TX</option>
+                    <option value="UT">UT</option>
+                    <option value="VT">VT</option>
+                    <option value="VA">VA</option>
+                    <option value="WA">WA</option>
+                    <option value="WV">WV</option>
+                    <option value="WI">WI</option>
+                    <option value="WY">WY</option>
+                    <option value="DC">DC</option>
+                  </select>
+                </div>
+
+                <div class="form-group form-group-small">
+                  <label for="zip">ZIP</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="zip" name="zip" placeholder="55401">
+                    <button type="button" class="clear-button" aria-label="Clear ZIP">&times;</button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Company Information -->
+            <fieldset class="form-section">
+              <legend class="section-header">Company Information</legend>
+
+              <div class="form-group">
+                <label for="company">Company Name</label>
+                <div class="input-wrapper">
+                  <input type="text" id="company" name="company" placeholder="Acme Corporation">
+                  <button type="button" class="clear-button" aria-label="Clear company">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="website">Website</label>
+                <div class="input-wrapper">
+                  <input type="text" id="website" name="website" placeholder="www.company.com">
+                  <button type="button" class="clear-button" aria-label="Clear website">&times;</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="calendar">Calendar/Booking Link</label>
+                <div class="input-wrapper">
+                  <input type="text" id="calendar" name="calendar" placeholder="calendly.com/yourname">
+                  <button type="button" class="clear-button" aria-label="Clear calendar">&times;</button>
+                </div>
+                <p class="field-hint">Calendly, Cal.com, or other scheduling link</p>
+              </div>
+            </fieldset>
+
+            <!-- Logo -->
+            <fieldset class="form-section">
+              <legend class="section-header">Logo</legend>
+
+              <div class="logo-tabs tabs-inline" role="tablist">
+                <button type="button" class="tab-inline active" role="tab" aria-selected="true" data-logo-tab="url">URL</button>
+                <button type="button" class="tab-inline" role="tab" aria-selected="false" data-logo-tab="upload">Upload</button>
+              </div>
+
+              <div class="logo-tab-content" id="logo-tab-url">
+                <div class="form-group">
+                  <div class="input-wrapper">
+                    <input type="text" id="logo-url" name="logoUrl" placeholder="https://company.com/logo.png">
+                    <button type="button" class="clear-button" aria-label="Clear logo URL">&times;</button>
+                  </div>
+                  <p class="field-hint">Enter the URL of your logo image. Must be publicly accessible.</p>
+                </div>
+              </div>
+
+              <div class="logo-tab-content hidden" id="logo-tab-upload">
+                <div class="form-group">
+                  <div class="file-upload-wrapper">
+                    <input type="file" id="logo-file" accept=".png,.jpg,.jpeg,.gif,.svg" class="file-input">
+                    <label for="logo-file" class="file-upload-label">
+                      <span class="file-upload-icon">+</span>
+                      <span class="file-upload-text">Choose file or drag here</span>
+                    </label>
+                  </div>
+                  <p class="field-hint">PNG with transparent background recommended. Max 200px wide.</p>
+                </div>
+                <div class="logo-preview-wrapper hidden" id="logo-preview-wrapper">
+                  <img id="logo-preview" alt="Logo preview" class="logo-preview-img">
+                  <button type="button" class="logo-remove-btn" id="logo-remove" aria-label="Remove logo">&times;</button>
+                </div>
+              </div>
+
+              <div class="logo-options">
+                <div class="option-group">
+                  <label class="option-label">Position</label>
+                  <div class="toggle-group" role="radiogroup" aria-label="Logo position">
+                    <button type="button" class="toggle-btn active" data-position="left" role="radio" aria-checked="true">Left</button>
+                    <button type="button" class="toggle-btn" data-position="top" role="radio" aria-checked="false">Above</button>
+                  </div>
+                </div>
+
+                <div class="option-group">
+                  <label class="option-label">Size</label>
+                  <div class="toggle-group" role="radiogroup" aria-label="Logo size">
+                    <button type="button" class="toggle-btn" data-size="small" role="radio" aria-checked="false">Small</button>
+                    <button type="button" class="toggle-btn active" data-size="medium" role="radio" aria-checked="true">Medium</button>
+                    <button type="button" class="toggle-btn" data-size="large" role="radio" aria-checked="false">Large</button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Social Links -->
+            <fieldset class="form-section">
+              <legend class="section-header">Social Links</legend>
+              <p class="section-hint">Add your social media profile URLs</p>
+
+              <div class="social-inputs">
+                <div class="form-group">
+                  <label for="facebook">
+                    <span class="social-icon" aria-hidden="true">f</span>
+                    Facebook
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="facebook" name="facebook" placeholder="facebook.com/company">
+                    <button type="button" class="clear-button" aria-label="Clear Facebook">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="instagram">
+                    <span class="social-icon" aria-hidden="true">ig</span>
+                    Instagram
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="instagram" name="instagram" placeholder="instagram.com/company">
+                    <button type="button" class="clear-button" aria-label="Clear Instagram">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="twitter">
+                    <span class="social-icon" aria-hidden="true">X</span>
+                    X (Twitter)
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="twitter" name="twitter" placeholder="x.com/company">
+                    <button type="button" class="clear-button" aria-label="Clear X">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="linkedin">
+                    <span class="social-icon" aria-hidden="true">in</span>
+                    LinkedIn
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="linkedin" name="linkedin" placeholder="linkedin.com/company">
+                    <button type="button" class="clear-button" aria-label="Clear LinkedIn">&times;</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="youtube">
+                    <span class="social-icon" aria-hidden="true">YT</span>
+                    YouTube
+                  </label>
+                  <div class="input-wrapper">
+                    <input type="text" id="youtube" name="youtube" placeholder="youtube.com/@company">
+                    <button type="button" class="clear-button" aria-label="Clear YouTube">&times;</button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Legal Disclaimer (Collapsible) -->
+            <fieldset class="form-section">
+              <button type="button" class="section-toggle" id="disclaimer-toggle" aria-expanded="false" aria-controls="disclaimer-content">
+                <legend class="section-header">Legal Disclaimer</legend>
+                <span class="toggle-icon">+</span>
+              </button>
+              <div class="collapsible-content" id="disclaimer-content" hidden>
+                <div class="form-group">
+                  <label for="disclaimer">Disclaimer Text</label>
+                  <textarea id="disclaimer" name="disclaimer" rows="3" placeholder="This email and any attachments are confidential..."></textarea>
+                  <p class="field-hint">Appears at the bottom in smaller text</p>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Design Options (Collapsible) -->
+            <fieldset class="form-section">
+              <button type="button" class="section-toggle" id="design-toggle" aria-expanded="false" aria-controls="design-options">
+                <legend class="section-header">Design Options</legend>
+                <span class="toggle-icon">+</span>
+              </button>
+
+              <div class="collapsible-content" id="design-options" hidden>
+                <div class="design-grid">
+                  <div class="color-option">
+                    <label for="name-color">Name Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="name-color" name="nameColor" value="#2c3e50" class="color-picker">
+                      <input type="text" id="name-color-value" class="color-value-input" value="#2C3E50" maxlength="7" aria-label="Name color hex code">
+                    </div>
+                  </div>
+
+                  <div class="color-option">
+                    <label for="title-color">Title/Company Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="title-color" name="titleColor" value="#555555" class="color-picker">
+                      <input type="text" id="title-color-value" class="color-value-input" value="#555555" maxlength="7" aria-label="Title color hex code">
+                    </div>
+                  </div>
+
+                  <div class="color-option">
+                    <label for="link-color">Link Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="link-color" name="linkColor" value="#2980b9" class="color-picker">
+                      <input type="text" id="link-color-value" class="color-value-input" value="#2980B9" maxlength="7" aria-label="Link color hex code">
+                    </div>
+                  </div>
+
+                  <div class="color-option">
+                    <label for="separator-color">Separator Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="separator-color" name="separatorColor" value="#555555" class="color-picker">
+                      <input type="text" id="separator-color-value" class="color-value-input" value="#555555" maxlength="7" aria-label="Separator color hex code">
+                    </div>
+                  </div>
+
+                  <div class="color-option">
+                    <label for="icon-color">Social Icons Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="icon-color" name="iconColor" value="#2980b9" class="color-picker">
+                      <input type="text" id="icon-color-value" class="color-value-input" value="#2980B9" maxlength="7" aria-label="Social icons color hex code">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Contrast Warning -->
+                <div class="contrast-warning hidden" id="contrast-warning" role="alert">
+                  <span class="warning-icon">&#9888;</span>
+                  <span class="warning-text">Some colors may be hard to read in dark mode email clients. Consider using lighter colors or enabling the background option below.</span>
+                </div>
+
+                <div class="form-group separator-group">
+                  <label for="separator-style">Separator Style</label>
+                  <select id="separator-style" name="separatorStyle">
+                    <option value="pipe">Pipe ( | )</option>
+                    <option value="bullet">Bullet ( &bull; )</option>
+                    <option value="dash">Dash ( &mdash; )</option>
+                    <option value="none">None (space only)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="font-family">Font Family</label>
+                  <select id="font-family" name="fontFamily">
+                    <option value="arial">Arial</option>
+                    <option value="helvetica">Helvetica</option>
+                    <option value="georgia">Georgia</option>
+                    <option value="times">Times New Roman</option>
+                    <option value="verdana">Verdana</option>
+                    <option value="tahoma">Tahoma</option>
+                  </select>
+                </div>
+
+                <!-- Dark Mode Background Option -->
+                <div class="form-group background-option">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="add-background" name="addBackground">
+                    <span class="checkbox-text">Add signature background for dark mode compatibility</span>
+                  </label>
+                  <div class="background-color-wrapper hidden" id="background-color-wrapper">
+                    <label for="background-color">Background Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="background-color" name="backgroundColor" value="#ffffff" class="color-picker">
+                      <input type="text" id="background-color-value" class="color-value-input" value="#FFFFFF" maxlength="7" aria-label="Background color hex code">
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn-reset" id="reset-design">Reset to Defaults</button>
+              </div>
+            </fieldset>
+          </form>
+        </section>
+
+        <!-- Preview Panel -->
+        <section class="preview-panel" aria-label="Signature preview">
+          <div class="preview-header">
+            <h2 class="preview-title" id="preview-heading">Preview</h2>
+            <div class="preview-bg-toggle" role="group" aria-label="Preview background color">
+              <button type="button" class="preview-bg-btn active" data-bg="light" aria-pressed="true">Light</button>
+              <button type="button" class="preview-bg-btn" data-bg="dark" aria-pressed="false">Dark</button>
+            </div>
+          </div>
+
+          <div class="preview-container card" id="preview-container" aria-labelledby="preview-heading" role="region" aria-live="polite">
+            <div class="preview-content" id="preview-content">
+              <p class="preview-placeholder">Enter your name to see the preview</p>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" class="btn-primary" id="copy-btn" aria-describedby="copy-hint">
+              Copy Signature
+            </button>
+            <button type="button" class="btn-secondary" id="howto-btn">
+              How to Import
+            </button>
+            <span id="copy-hint" class="sr-only">Copies the signature HTML to your clipboard for pasting into email clients</span>
+          </div>
+        </section>
+        </div>
+      </div>
+
+      <!-- Bulk Create Mode -->
+      <div class="mode-panel" id="panel-bulk" role="tabpanel" aria-labelledby="tab-bulk">
+        <!-- Step Indicator -->
+        <nav class="step-indicator" aria-label="Wizard progress">
+          <div class="step active" data-step="1">
+            <span class="step-number">1</span>
+            <span class="step-label">Design Template</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step" data-step="2">
+            <span class="step-number">2</span>
+            <span class="step-label">Import Data</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step" data-step="3">
+            <span class="step-number">3</span>
+            <span class="step-label">Preview & Export</span>
+          </div>
+        </nav>
+
+        <!-- Step 1: Design Template -->
+        <div class="bulk-step active" id="bulk-step-1">
+          <div class="bulk-layout">
+            <section class="bulk-form card">
+              <h3 class="bulk-section-title">Template Design</h3>
+              <p class="bulk-section-desc">Set the design that will apply to all signatures.</p>
+
+              <!-- Logo Options -->
+              <div class="form-section">
+                <h4 class="subsection-header">Logo</h4>
+                <div class="logo-tabs tabs-inline" role="tablist">
+                  <button type="button" class="tab-inline active" role="tab" data-bulk-logo-tab="url">URL</button>
+                  <button type="button" class="tab-inline" role="tab" data-bulk-logo-tab="upload">Upload</button>
+                </div>
+
+                <div class="logo-tab-content" id="bulk-logo-tab-url">
+                  <div class="form-group">
+                    <div class="input-wrapper">
+                      <input type="text" id="bulk-logo-url" placeholder="https://company.com/logo.png">
+                      <button type="button" class="clear-button" aria-label="Clear logo URL">&times;</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="logo-tab-content hidden" id="bulk-logo-tab-upload">
+                  <div class="form-group">
+                    <div class="file-upload-wrapper">
+                      <input type="file" id="bulk-logo-file" accept=".png,.jpg,.jpeg,.gif,.svg" class="file-input">
+                      <label for="bulk-logo-file" class="file-upload-label">
+                        <span class="file-upload-icon">+</span>
+                        <span class="file-upload-text">Choose file or drag here</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="logo-preview-wrapper hidden" id="bulk-logo-preview-wrapper">
+                    <img id="bulk-logo-preview" alt="Logo preview" class="logo-preview-img">
+                    <button type="button" class="logo-remove-btn" id="bulk-logo-remove">&times;</button>
+                  </div>
+                </div>
+
+                <div class="logo-options">
+                  <div class="option-group">
+                    <label class="option-label">Position</label>
+                    <div class="toggle-group" role="radiogroup">
+                      <button type="button" class="toggle-btn active" data-bulk-position="left">Left</button>
+                      <button type="button" class="toggle-btn" data-bulk-position="top">Above</button>
+                    </div>
+                  </div>
+                  <div class="option-group">
+                    <label class="option-label">Size</label>
+                    <div class="toggle-group" role="radiogroup">
+                      <button type="button" class="toggle-btn" data-bulk-size="small">Small</button>
+                      <button type="button" class="toggle-btn active" data-bulk-size="medium">Medium</button>
+                      <button type="button" class="toggle-btn" data-bulk-size="large">Large</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color Options -->
+              <div class="form-section">
+                <h4 class="subsection-header">Colors</h4>
+                <div class="design-grid">
+                  <div class="color-option">
+                    <label for="bulk-name-color">Name</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-name-color" value="#2c3e50" class="color-picker">
+                      <input type="text" id="bulk-name-color-value" class="color-value-input" value="#2C3E50" maxlength="7" aria-label="Name color hex code">
+                    </div>
+                  </div>
+                  <div class="color-option">
+                    <label for="bulk-title-color">Title/Company</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-title-color" value="#555555" class="color-picker">
+                      <input type="text" id="bulk-title-color-value" class="color-value-input" value="#555555" maxlength="7" aria-label="Title color hex code">
+                    </div>
+                  </div>
+                  <div class="color-option">
+                    <label for="bulk-link-color">Links</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-link-color" value="#2980b9" class="color-picker">
+                      <input type="text" id="bulk-link-color-value" class="color-value-input" value="#2980B9" maxlength="7" aria-label="Link color hex code">
+                    </div>
+                  </div>
+                  <div class="color-option">
+                    <label for="bulk-separator-color">Separator</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-separator-color" value="#555555" class="color-picker">
+                      <input type="text" id="bulk-separator-color-value" class="color-value-input" value="#555555" maxlength="7" aria-label="Separator color hex code">
+                    </div>
+                  </div>
+                  <div class="color-option">
+                    <label for="bulk-icon-color">Social Icons</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-icon-color" value="#2980b9" class="color-picker">
+                      <input type="text" id="bulk-icon-color-value" class="color-value-input" value="#2980B9" maxlength="7" aria-label="Social icons color hex code">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Contrast Warning -->
+                <div class="contrast-warning hidden" id="bulk-contrast-warning" role="alert">
+                  <span class="warning-icon">&#9888;</span>
+                  <span class="warning-text">Some colors may be hard to read in dark mode email clients. Consider using lighter colors or enabling the background option below.</span>
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                  <label for="bulk-separator-style">Separator Style</label>
+                  <select id="bulk-separator-style" style="max-width: 200px;">
+                    <option value="pipe">Pipe ( | )</option>
+                    <option value="bullet">Bullet ( &bull; )</option>
+                    <option value="dash">Dash ( &mdash; )</option>
+                    <option value="none">None (space only)</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                  <label for="bulk-font-family">Font Family</label>
+                  <select id="bulk-font-family" style="max-width: 200px;">
+                    <option value="arial">Arial</option>
+                    <option value="helvetica">Helvetica</option>
+                    <option value="georgia">Georgia</option>
+                    <option value="times">Times New Roman</option>
+                    <option value="verdana">Verdana</option>
+                    <option value="tahoma">Tahoma</option>
+                  </select>
+                </div>
+
+                <!-- Dark Mode Background Option -->
+                <div class="form-group background-option">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="bulk-add-background" name="addBackground">
+                    <span class="checkbox-text">Add signature background for dark mode compatibility</span>
+                  </label>
+                  <div class="background-color-wrapper hidden" id="bulk-background-color-wrapper">
+                    <label for="bulk-background-color">Background Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="bulk-background-color" name="backgroundColor" value="#ffffff" class="color-picker">
+                      <input type="text" id="bulk-background-color-value" class="color-value-input" value="#FFFFFF" maxlength="7" aria-label="Background color hex code">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="bulk-preview">
+              <div class="preview-header">
+                <h3 class="bulk-section-title" style="margin: 0;">Template Preview</h3>
+                <div class="preview-bg-toggle" role="group" aria-label="Preview background color">
+                  <button type="button" class="preview-bg-btn active" data-bulk-preview-bg="light" aria-pressed="true">Light</button>
+                  <button type="button" class="preview-bg-btn" data-bulk-preview-bg="dark" aria-pressed="false">Dark</button>
+                </div>
+              </div>
+              <div class="preview-container card" id="bulk-template-preview">
+                <div class="preview-content">
+                  <p style="margin: 0 0 2px 0; font-weight: bold; font-size: 16px; color: #2c3e50;">[Name]</p>
+                  <p style="margin: 0 0 8px 0; color: #555555;">[Title] | [Company]</p>
+                  <p style="margin: 0 0 4px 0; color: #555555;">[Phone] | [Email]</p>
+                  <p style="margin: 0 0 8px 0; color: #555555;">[Address]</p>
+                  <p style="margin: 0;"><a href="#" style="color: #2980b9; text-decoration: none;">www.[website]</a></p>
+                </div>
+              </div>
+              <div class="bulk-nav">
+                <div></div>
+                <button type="button" class="btn-primary" id="bulk-next-1">Next: Import Data</button>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Step 2: Import Data -->
+        <div class="bulk-step" id="bulk-step-2">
+          <div class="bulk-import card">
+            <h3 class="bulk-section-title">Import Employee Data</h3>
+
+            <div class="import-options">
+              <div class="import-option">
+                <h4 class="subsection-header">Option 1: Upload CSV File</h4>
+                <button type="button" class="btn-secondary" id="download-template">
+                  Download CSV Template
+                </button>
+                <div class="file-upload-wrapper" style="margin-top: 16px;">
+                  <input type="file" id="csv-file" accept=".csv" class="file-input">
+                  <label for="csv-file" class="file-upload-label">
+                    <span class="file-upload-icon">+</span>
+                    <span class="file-upload-text">Upload CSV file or drag here</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="import-divider">
+                <span>OR</span>
+              </div>
+
+              <div class="import-option">
+                <h4 class="subsection-header">Option 2: Paste from Spreadsheet</h4>
+                <p class="field-hint">Copy rows from Excel or Google Sheets (including header row) and paste below.</p>
+                <textarea id="paste-data" class="paste-textarea" rows="8" placeholder="Paste your data here..."></textarea>
+                <button type="button" class="btn-secondary" id="parse-paste" style="margin-top: 8px;">Parse Pasted Data</button>
+              </div>
+            </div>
+
+            <!-- Import Results -->
+            <div class="import-results hidden" id="import-results">
+              <div class="import-success" id="import-success">
+                <span class="success-icon">&#10003;</span>
+                <span class="success-text">Loaded <strong id="employee-count">0</strong> employees</span>
+              </div>
+
+              <div class="import-preview-table">
+                <table id="import-preview-table">
+                  <thead>
+                    <tr id="import-table-header"></tr>
+                  </thead>
+                  <tbody id="import-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Import Error -->
+            <div class="import-error hidden" id="import-error">
+              <span class="error-icon">!</span>
+              <span class="error-text" id="error-text">Error message here</span>
+            </div>
+
+            <div class="bulk-nav">
+              <button type="button" class="btn-secondary" id="bulk-back-2">Back</button>
+              <button type="button" class="btn-primary" id="bulk-next-2" disabled>Next: Preview & Export</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Preview & Export -->
+        <div class="bulk-step" id="bulk-step-3">
+          <div class="bulk-export">
+            <div class="export-header card">
+              <div class="export-controls">
+                <div class="export-info">
+                  <span id="signature-count">Showing 0 signatures</span>
+                </div>
+                <div class="export-search">
+                  <input type="text" id="signature-search" placeholder="Filter by name..." class="search-input">
+                </div>
+                <div class="preview-bg-toggle" role="group">
+                  <button type="button" class="preview-bg-btn active" data-bulk-bg="light">Light</button>
+                  <button type="button" class="preview-bg-btn" data-bulk-bg="dark">Dark</button>
+                </div>
+              </div>
+              <div class="export-actions">
+                <button type="button" class="btn-primary" id="download-zip">
+                  Download All as ZIP
+                </button>
+                <button type="button" class="btn-secondary" id="download-preview-page">
+                  Download Preview Page
+                </button>
+              </div>
+            </div>
+
+            <div class="signature-grid" id="signature-grid">
+              <!-- Signature cards will be generated here -->
+            </div>
+
+            <div class="bulk-nav card">
+              <button type="button" class="btn-secondary" id="bulk-back-3">Back</button>
+              <button type="button" class="btn-reset" id="bulk-start-over">Start Over</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <span class="toast-icon">&#10003;</span>
+      <span class="toast-message" id="toast-message">Signature copied!</span>
+    </div>
+
+    <!-- How to Import Modal -->
+    <div class="modal-backdrop" id="howto-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h2 id="modal-title">How to Import Your Signature</h2>
+          <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="gmail">Gmail</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="outlook-desktop">Outlook</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="apple-mail">Apple Mail</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="tab-content active" id="tab-gmail">
+            <ol class="instruction-list">
+              <li>Click the gear icon in Gmail and select "See all settings"</li>
+              <li>Scroll down to the "Signature" section</li>
+              <li>Click "Create new" and name your signature</li>
+              <li>Click in the signature text box and paste (Ctrl+V or Cmd+V)</li>
+              <li>Click "Save Changes" at the bottom</li>
+            </ol>
+          </div>
+
+          <div class="tab-content" id="tab-outlook-desktop">
+            <ol class="instruction-list">
+              <li>Go to File > Options > Mail > Signatures</li>
+              <li>Click "New" to create a new signature</li>
+              <li>Paste your signature in the edit box (Ctrl+V)</li>
+              <li>Set it as default for new messages and/or replies</li>
+              <li>Click "OK" to save</li>
+            </ol>
+          </div>
+
+          <div class="tab-content" id="tab-apple-mail">
+            <ol class="instruction-list">
+              <li>Open Mail and go to Mail > Settings (or Preferences)</li>
+              <li>Click the "Signatures" tab</li>
+              <li>Click the + button to add a new signature</li>
+              <li>Paste your signature in the preview pane (Cmd+V)</li>
+              <li>Drag the signature to the email account you want to use it with</li>
+            </ol>
+          </div>
+        </div>
+
+        <p class="modal-note">
+          <strong>Tip:</strong> Make sure to paste as rich text (not plain text) to preserve formatting.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jszip.min.js"></script>
+  <script src="js/formatters.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/csv-handler.js"></script>
+  <script src="js/signature-renderer.js"></script>
+  <script src="js/signature-builder.js"></script>
+  <script src="js/bulk-creator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
