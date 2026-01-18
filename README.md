@@ -2,6 +2,8 @@
 
 A free, open-source tool for creating professional email signatures. Works entirely in your browser - no server required, no data leaves your computer.
 
+**🔗 Try it now: [signatures.harrenstein.com](https://signatures.harrenstein.com)**
+
 ## Features
 
 - **Easy to use** - Simple form-based interface with live preview
@@ -18,7 +20,7 @@ A free, open-source tool for creating professional email signatures. Works entir
 
 ### Option 1: Use Online
 
-Host this repository on GitHub Pages, Netlify, or any static hosting service.
+Visit **[signatures.harrenstein.com](https://signatures.harrenstein.com)** - no download required!
 
 ### Option 2: Download and Run Locally
 
@@ -30,7 +32,7 @@ Host this repository on GitHub Pages, Netlify, or any static hosting service.
 ### Option 3: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/email-signature-express.git
+git clone https://github.com/JoeHarrenstein/email-signature-express.git
 cd email-signature-express
 # Open index.html in your browser
 ```
