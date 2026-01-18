@@ -232,6 +232,98 @@ const Utils = {
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  },
+
+  // ===========================================
+  // Company Template Utilities
+  // ===========================================
+
+  /**
+   * Fields that are company-wide (saved in templates)
+   */
+  companyFieldKeys: [
+    'company',
+    'address1',
+    'address2',
+    'city',
+    'state',
+    'zip',
+    'website',
+    'facebook',
+    'instagram',
+    'twitter',
+    'linkedin',
+    'youtube'
+  ],
+
+  /**
+   * Export a company template as JSON
+   * @param {Object} designOptions - Design settings
+   * @param {Object} formData - Form data (will extract company fields only)
+   * @param {string} templateName - Name for the template
+   */
+  exportCompanyTemplate(designOptions, formData, templateName) {
+    // Extract company fields from form data
+    const companyFields = {};
+    this.companyFieldKeys.forEach(key => {
+      if (formData[key]) {
+        companyFields[key] = formData[key];
+      }
+    });
+
+    // Build template object
+    const template = {
+      templateVersion: '1.0',
+      exportedAt: new Date().toISOString(),
+      type: 'company-template',
+      templateName: templateName,
+      design: { ...designOptions },
+      companyFields: companyFields
+    };
+
+    // Create and download JSON file
+    const json = JSON.stringify(template, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${templateName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-template.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  },
+
+  /**
+   * Parse and validate a company template JSON
+   * @param {string} jsonString - JSON content
+   * @returns {Object} Parsed template or null if invalid
+   */
+  parseCompanyTemplate(jsonString) {
+    try {
+      const template = JSON.parse(jsonString);
+
+      // Validate required fields
+      if (!template.type || !template.design) {
+        throw new Error('Invalid template format: missing required fields');
+      }
+
+      // Support both company-template and design-only formats
+      if (template.type !== 'company-template' && template.type !== 'design-template') {
+        throw new Error('Invalid template type');
+      }
+
+      // Ensure companyFields exists (may be empty for design-only templates)
+      if (!template.companyFields) {
+        template.companyFields = {};
+      }
+
+      return template;
+    } catch (error) {
+      console.error('Template parsing error:', error);
+      return null;
+    }
   }
 };
 

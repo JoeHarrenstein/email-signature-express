@@ -269,9 +269,12 @@ textarea,
 
 /* Form Sections */
 .form-section {
-  border: none;
-  padding: 0;
-  margin: 0 0 24px 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 0 16px 0;
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .form-section:last-child {
@@ -946,6 +949,19 @@ select:focus:not(:focus-visible) {
 
 .toggle-btn:hover:not(.active) {
   color: var(--text-primary);
+}
+
+/* Icon Style Toggle */
+.icon-style-toggle {
+  display: flex;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  padding: 3px;
+  margin-top: 6px;
+}
+
+.color-option.hidden {
+  display: none;
 }
 
 /* Collapsible Section */
@@ -1916,4 +1932,226 @@ select:focus:not(:focus-visible) {
   .mode-tabs {
     max-width: 100%;
   }
+}
+
+/* ===========================================
+   Company Template Section
+   =========================================== */
+
+.template-section {
+  background: var(--accent-faded);
+  border: 1px solid var(--accent);
+}
+
+.template-section .section-header {
+  margin-bottom: 4px;
+}
+
+.template-section .section-hint {
+  margin: 0 0 12px 0;
+}
+
+.template-status {
+  margin-bottom: 12px;
+}
+
+.template-indicator {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 20px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.template-indicator.inactive {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+
+.template-indicator.active {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.template-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* Save Template Modal */
+.modal-small {
+  max-width: 420px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.template-save-info {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.template-save-info p {
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.template-save-info ul {
+  margin: 0 0 8px 0;
+  padding-left: 20px;
+  color: var(--text-secondary);
+}
+
+.template-save-info li {
+  margin-bottom: 4px;
+}
+
+.template-save-note {
+  font-style: italic;
+  color: var(--text-muted) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Responsive template section */
+@media (max-width: 500px) {
+  .template-buttons {
+    flex-direction: column;
+  }
+
+  .template-buttons .btn-small {
+    width: 100%;
+  }
+}
+
+/* Bulk Creator Template Section */
+.bulk-template-section {
+  background: var(--accent-faded);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.bulk-template-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bulk-template-section .template-indicator {
+  flex-shrink: 0;
+}
+
+.bulk-template-section .field-hint {
+  margin: 10px 0 0 0;
+}
+
+@media (max-width: 500px) {
+  .bulk-template-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bulk-template-header .btn-small {
+    width: 100%;
+  }
+}
+
+/* ===========================================
+   Info Icon Button
+   =========================================== */
+
+.info-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-left: 6px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.info-icon-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.info-icon-btn:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Logo Info Modal Content */
+.logo-info-section {
+  margin-bottom: 20px;
+}
+
+.logo-info-section:last-child {
+  margin-bottom: 0;
+}
+
+.logo-info-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.logo-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.logo-info-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.logo-info-list li .icon {
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.logo-info-list li.pro .icon {
+  color: var(--success);
+}
+
+.logo-info-list li.con .icon {
+  color: var(--error);
 }

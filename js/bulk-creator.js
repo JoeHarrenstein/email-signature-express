@@ -10,6 +10,10 @@ const BulkCreator = {
   removedIndices: new Set(),
   filenames: new Map(),
 
+  // Loaded company template
+  loadedTemplate: null,
+  companyDefaults: {},
+
   // Design template options (shared format with SignatureBuilder, dark mode-safe defaults)
   designOptions: {
     logoPosition: 'left',
@@ -21,6 +25,7 @@ const BulkCreator = {
     linkColor: '#2980b9',
     separatorColor: '#555555',
     iconColor: '#2980b9',
+    iconStyle: 'solid',
     separatorStyle: 'pipe',
     addBackground: false,
     backgroundColor: '#ffffff',
@@ -39,6 +44,8 @@ const BulkCreator = {
     this.bindStep1Events();
     this.bindStep2Events();
     this.bindStep3Events();
+    this.bindTemplateEvents();
+    this.bindLogoInfoEvent();
     this.updateTemplatePreview();
   },
 
@@ -69,6 +76,11 @@ const BulkCreator = {
       logoRemoveBtn: document.getElementById('bulk-logo-remove'),
       templatePreview: document.getElementById('bulk-template-preview'),
       nextBtn1: document.getElementById('bulk-next-1'),
+
+      // Template controls
+      bulkLoadTemplateBtn: document.getElementById('bulk-load-template-btn'),
+      bulkTemplateFileInput: document.getElementById('bulk-template-file-input'),
+      bulkTemplateIndicator: document.getElementById('bulk-template-indicator'),
 
       // Step 2 controls
       downloadTemplateBtn: document.getElementById('download-template'),
@@ -261,6 +273,30 @@ const BulkCreator = {
           }
         });
       }
+    });
+
+    // Icon style toggle
+    const bulkIconStyleBtns = document.querySelectorAll('[data-bulk-icon-style]');
+    const bulkIconColorOption = document.getElementById('bulk-icon-color-option');
+
+    bulkIconStyleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const style = btn.dataset.bulkIconStyle;
+        this.designOptions.iconStyle = style;
+
+        // Update button states
+        bulkIconStyleBtns.forEach(b => {
+          b.classList.toggle('active', b.dataset.bulkIconStyle === style);
+          b.setAttribute('aria-pressed', b.dataset.bulkIconStyle === style);
+        });
+
+        // Show/hide icon color option based on style
+        if (bulkIconColorOption) {
+          bulkIconColorOption.classList.toggle('hidden', style === 'branded');
+        }
+
+        this.updateTemplatePreview();
+      });
     });
 
     // Separator style
@@ -513,19 +549,230 @@ const BulkCreator = {
   },
 
   /**
+   * Bind template loading events
+   */
+  bindTemplateEvents() {
+    const loadBtn = this.elements.bulkLoadTemplateBtn;
+    const fileInput = this.elements.bulkTemplateFileInput;
+
+    if (loadBtn && fileInput) {
+      loadBtn.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+          const text = await file.text();
+          const template = Utils.parseCompanyTemplate(text);
+
+          if (!template) {
+            Utils.showToast('Invalid template file', 'error');
+            return;
+          }
+
+          this.applyTemplate(template);
+          Utils.showToast(`Template "${template.templateName || 'Unnamed'}" loaded!`, 'success');
+        } catch (error) {
+          console.error('Failed to load template:', error);
+          Utils.showToast('Failed to load template file', 'error');
+        }
+
+        // Reset file input so same file can be selected again
+        fileInput.value = '';
+      });
+    }
+  },
+
+  /**
+   * Bind logo info button event (shares modal with single signature mode)
+   */
+  bindLogoInfoEvent() {
+    const infoBtn = document.getElementById('bulk-logo-info-btn');
+    const modal = document.getElementById('logo-info-modal');
+    const closeBtn = document.getElementById('logo-info-close');
+
+    if (!infoBtn || !modal) return;
+
+    // Open modal
+    infoBtn.addEventListener('click', () => {
+      modal.classList.add('visible');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    });
+  },
+
+  /**
+   * Apply a loaded template to bulk creator
+   * @param {Object} template - Parsed template data
+   */
+  applyTemplate(template) {
+    this.loadedTemplate = template;
+
+    // Apply design options
+    if (template.design) {
+      this.designOptions = { ...this.designOptions, ...template.design };
+
+      // Apply to UI
+      this.applyDesignToUI();
+
+      // Handle logo
+      if (template.design.logoData) {
+        this.showLogoPreview(template.design.logoData);
+        this.switchLogoTab('upload');
+      } else if (template.design.logoUrl) {
+        if (this.elements.logoUrlInput) {
+          this.elements.logoUrlInput.value = template.design.logoUrl;
+        }
+        this.switchLogoTab('url');
+      }
+    }
+
+    // Store company defaults for merging with CSV data
+    if (template.companyFields) {
+      this.companyDefaults = { ...template.companyFields };
+    }
+
+    // Update template status indicator
+    this.updateBulkTemplateStatus(template.templateName);
+
+    // Update preview
+    this.updateTemplatePreview();
+  },
+
+  /**
+   * Apply design options to UI controls
+   */
+  applyDesignToUI() {
+    const opts = this.designOptions;
+
+    // Logo URL
+    if (this.elements.logoUrlInput && opts.logoUrl) {
+      this.elements.logoUrlInput.value = opts.logoUrl;
+    }
+
+    // Logo position buttons
+    document.querySelectorAll('[data-bulk-position]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.bulkPosition === opts.logoPosition);
+    });
+
+    // Logo size buttons
+    document.querySelectorAll('[data-bulk-size]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.bulkSize === opts.logoSize);
+    });
+
+    // Color pickers and hex inputs
+    const colorMappings = [
+      { id: 'bulk-name-color', key: 'nameColor' },
+      { id: 'bulk-title-color', key: 'titleColor' },
+      { id: 'bulk-link-color', key: 'linkColor' },
+      { id: 'bulk-separator-color', key: 'separatorColor' },
+      { id: 'bulk-icon-color', key: 'iconColor' }
+    ];
+
+    colorMappings.forEach(({ id, key }) => {
+      const picker = document.getElementById(id);
+      const hexInput = document.getElementById(`${id}-value`);
+      if (picker && opts[key]) {
+        picker.value = opts[key];
+      }
+      if (hexInput && opts[key]) {
+        hexInput.value = opts[key].toUpperCase();
+        hexInput.classList.remove('invalid');
+      }
+    });
+
+    // Separator style
+    const separatorSelect = document.getElementById('bulk-separator-style');
+    if (separatorSelect && opts.separatorStyle) {
+      separatorSelect.value = opts.separatorStyle;
+    }
+
+    // Icon style toggle
+    const bulkIconStyleBtns = document.querySelectorAll('[data-bulk-icon-style]');
+    const bulkIconColorOption = document.getElementById('bulk-icon-color-option');
+    bulkIconStyleBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.bulkIconStyle === opts.iconStyle);
+      btn.setAttribute('aria-pressed', btn.dataset.bulkIconStyle === opts.iconStyle);
+    });
+    if (bulkIconColorOption && opts.iconStyle === 'branded') {
+      bulkIconColorOption.classList.add('hidden');
+    }
+
+    // Font family
+    const fontFamilySelect = document.getElementById('bulk-font-family');
+    if (fontFamilySelect && opts.fontFamily) {
+      fontFamilySelect.value = opts.fontFamily;
+    }
+
+    // Background option
+    const addBackgroundCheckbox = document.getElementById('bulk-add-background');
+    const backgroundColorWrapper = document.getElementById('bulk-background-color-wrapper');
+    const backgroundColorPicker = document.getElementById('bulk-background-color');
+    const backgroundColorInput = document.getElementById('bulk-background-color-value');
+
+    if (addBackgroundCheckbox) {
+      addBackgroundCheckbox.checked = opts.addBackground === true || opts.addBackground === 'true';
+      if (backgroundColorWrapper) {
+        backgroundColorWrapper.classList.toggle('hidden', !addBackgroundCheckbox.checked);
+      }
+    }
+
+    if (backgroundColorPicker && opts.backgroundColor) {
+      backgroundColorPicker.value = opts.backgroundColor;
+    }
+
+    if (backgroundColorInput && opts.backgroundColor) {
+      backgroundColorInput.value = opts.backgroundColor.toUpperCase();
+    }
+  },
+
+  /**
+   * Update the bulk template status indicator
+   * @param {string} templateName - Name of loaded template (or null to clear)
+   */
+  updateBulkTemplateStatus(templateName) {
+    const indicator = this.elements.bulkTemplateIndicator;
+    if (!indicator) return;
+
+    if (templateName) {
+      indicator.textContent = templateName;
+      indicator.classList.remove('inactive');
+      indicator.classList.add('active');
+    } else {
+      indicator.textContent = 'No template loaded';
+      indicator.classList.remove('active');
+      indicator.classList.add('inactive');
+    }
+  },
+
+  /**
    * Update template preview (Step 1)
    */
   updateTemplatePreview() {
     if (!this.elements.templatePreview) return;
 
+    // Use company defaults if loaded, otherwise use placeholders
     const placeholderData = {
       name: '[Name]',
       title: '[Title]',
-      company: '[Company]',
+      company: this.companyDefaults.company || '[Company]',
       phone: '[Phone]',
       email: '[Email]',
-      address1: '[Address]',
-      website: '[Website]'
+      address1: this.companyDefaults.address1 || '[Address]',
+      address2: this.companyDefaults.address2 || '',
+      city: this.companyDefaults.city || '',
+      state: this.companyDefaults.state || '',
+      zip: this.companyDefaults.zip || '',
+      website: this.companyDefaults.website || '[Website]',
+      facebook: this.companyDefaults.facebook || '',
+      instagram: this.companyDefaults.instagram || '',
+      twitter: this.companyDefaults.twitter || '',
+      linkedin: this.companyDefaults.linkedin || '',
+      youtube: this.companyDefaults.youtube || ''
     };
 
     const html = SignatureRenderer.render(placeholderData, this.designOptions);
@@ -542,7 +789,19 @@ const BulkCreator = {
       return;
     }
 
-    this.employees = result.data;
+    // Merge company defaults with each employee record
+    // Company defaults fill in missing fields but don't override CSV data
+    this.employees = result.data.map(emp => {
+      const merged = { ...this.companyDefaults };
+      // Only copy non-empty values from employee
+      Object.entries(emp).forEach(([key, value]) => {
+        if (value && value.trim()) {
+          merged[key] = value;
+        }
+      });
+      return merged;
+    });
+
     this.removedIndices.clear();
     this.filenames = CsvHandler.generateFilenames(this.employees);
 

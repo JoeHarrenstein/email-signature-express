@@ -52,8 +52,28 @@
       <div class="mode-panel active" id="panel-single" role="tabpanel" aria-labelledby="tab-single">
         <div class="builder-layout">
           <!-- Form Panel -->
-          <section class="form-panel card" aria-label="Signature form">
+          <section class="form-panel" aria-label="Signature form">
           <form id="signature-form" aria-label="Signature information">
+            <!-- Company Template -->
+            <fieldset class="form-section template-section">
+              <legend class="section-header">Company Template</legend>
+              <p class="section-hint">Save or load a company template with design settings and company info</p>
+
+              <div class="template-status" id="template-status">
+                <span class="template-indicator inactive" id="template-indicator">No template loaded</span>
+              </div>
+
+              <div class="template-buttons">
+                <button type="button" class="btn-secondary btn-small" id="save-template-btn">
+                  Save as Template
+                </button>
+                <button type="button" class="btn-secondary btn-small" id="load-template-btn">
+                  Load Template
+                </button>
+                <input type="file" id="template-file-input" accept=".json" class="hidden">
+              </div>
+            </fieldset>
+
             <!-- Personal Information -->
             <fieldset class="form-section">
               <legend class="section-header">Personal Information</legend>
@@ -246,7 +266,10 @@
 
             <!-- Logo -->
             <fieldset class="form-section">
-              <legend class="section-header">Logo</legend>
+              <legend class="section-header">
+                Logo
+                <button type="button" class="info-icon-btn" id="logo-info-btn" aria-label="Logo options information" title="URL vs Upload: Pros and Cons">&#9432;</button>
+              </legend>
 
               <div class="logo-tabs tabs-inline" role="tablist">
                 <button type="button" class="tab-inline active" role="tab" aria-selected="true" data-logo-tab="url">URL</button>
@@ -420,6 +443,14 @@
                   </div>
 
                   <div class="color-option">
+                    <label>Icon Style</label>
+                    <div class="icon-style-toggle">
+                      <button type="button" class="toggle-btn active" data-icon-style="solid" aria-pressed="true">Solid</button>
+                      <button type="button" class="toggle-btn" data-icon-style="branded" aria-pressed="false">Brand</button>
+                    </div>
+                  </div>
+
+                  <div class="color-option" id="icon-color-option">
                     <label for="icon-color">Social Icons Color</label>
                     <div class="color-picker-wrapper">
                       <input type="color" id="icon-color" name="iconColor" value="#2980b9" class="color-picker">
@@ -533,9 +564,24 @@
               <h3 class="bulk-section-title">Template Design</h3>
               <p class="bulk-section-desc">Set the design that will apply to all signatures.</p>
 
+              <!-- Load Template Option -->
+              <div class="bulk-template-section">
+                <div class="bulk-template-header">
+                  <span class="template-indicator inactive" id="bulk-template-indicator">No template loaded</span>
+                  <button type="button" class="btn-secondary btn-small" id="bulk-load-template-btn">
+                    Load Template
+                  </button>
+                  <input type="file" id="bulk-template-file-input" accept=".json" class="hidden">
+                </div>
+                <p class="field-hint">Load a saved company template to apply design settings and company info automatically.</p>
+              </div>
+
               <!-- Logo Options -->
               <div class="form-section">
-                <h4 class="subsection-header">Logo</h4>
+                <h4 class="subsection-header">
+                  Logo
+                  <button type="button" class="info-icon-btn" id="bulk-logo-info-btn" aria-label="Logo options information" title="URL vs Upload: Pros and Cons">&#9432;</button>
+                </h4>
                 <div class="logo-tabs tabs-inline" role="tablist">
                   <button type="button" class="tab-inline active" role="tab" data-bulk-logo-tab="url">URL</button>
                   <button type="button" class="tab-inline" role="tab" data-bulk-logo-tab="upload">Upload</button>
@@ -618,6 +664,14 @@
                     </div>
                   </div>
                   <div class="color-option">
+                    <label>Icon Style</label>
+                    <div class="icon-style-toggle">
+                      <button type="button" class="toggle-btn active" data-bulk-icon-style="solid" aria-pressed="true">Solid</button>
+                      <button type="button" class="toggle-btn" data-bulk-icon-style="branded" aria-pressed="false">Brand</button>
+                    </div>
+                  </div>
+
+                  <div class="color-option" id="bulk-icon-color-option">
                     <label for="bulk-icon-color">Social Icons</label>
                     <div class="color-picker-wrapper">
                       <input type="color" id="bulk-icon-color" value="#2980b9" class="color-picker">
@@ -854,12 +908,79 @@
         </p>
       </div>
     </div>
+
+    <!-- Save Template Modal -->
+    <div class="modal-backdrop" id="save-template-modal" aria-hidden="true">
+      <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="save-template-title">
+        <div class="modal-header">
+          <h2 id="save-template-title">Save Company Template</h2>
+          <button type="button" class="modal-close" id="save-template-close" aria-label="Close modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="template-name">Template Name</label>
+            <input type="text" id="template-name" placeholder="e.g., Acme Corp Standard" maxlength="50">
+          </div>
+
+          <div class="template-save-info">
+            <p><strong>This template will include:</strong></p>
+            <ul>
+              <li>Design settings (colors, logo, fonts, separator)</li>
+              <li>Company information (name, address, website)</li>
+              <li>Social media links</li>
+            </ul>
+            <p class="template-save-note">Employee-specific fields (Name, Title, Email, Phone) are not saved.</p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="save-template-cancel">Cancel</button>
+          <button type="button" class="btn-primary" id="save-template-confirm">Save Template</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Info Modal -->
+    <div class="modal-backdrop" id="logo-info-modal" aria-hidden="true">
+      <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="logo-info-title">
+        <div class="modal-header">
+          <h2 id="logo-info-title">Logo Options: URL vs Upload</h2>
+          <button type="button" class="modal-close" id="logo-info-close" aria-label="Close modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="logo-info-section">
+            <h3 class="logo-info-heading">URL Option</h3>
+            <ul class="logo-info-list">
+              <li class="pro"><span class="icon">&#10003;</span> Smaller signature file size</li>
+              <li class="pro"><span class="icon">&#10003;</span> Easy to update logo across all signatures</li>
+              <li class="con"><span class="icon">&#10007;</span> Requires publicly accessible URL</li>
+              <li class="con"><span class="icon">&#10007;</span> May be blocked by some email clients</li>
+              <li class="con"><span class="icon">&#10007;</span> Logo won't display if URL becomes unavailable</li>
+            </ul>
+          </div>
+
+          <div class="logo-info-section">
+            <h3 class="logo-info-heading">Upload Option (Base64)</h3>
+            <ul class="logo-info-list">
+              <li class="pro"><span class="icon">&#10003;</span> Logo embedded in signature - always displays</li>
+              <li class="pro"><span class="icon">&#10003;</span> Works offline and in all email clients</li>
+              <li class="pro"><span class="icon">&#10003;</span> No external hosting required</li>
+              <li class="con"><span class="icon">&#10007;</span> Larger signature file size</li>
+              <li class="con"><span class="icon">&#10007;</span> To update logo, must regenerate all signatures</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="js/jszip.min.js"></script>
   <script src="js/formatters.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/csv-handler.js"></script>
+  <script src="js/branded-icons.js"></script>
   <script src="js/signature-renderer.js"></script>
   <script src="js/signature-builder.js"></script>
   <script src="js/bulk-creator.js"></script>

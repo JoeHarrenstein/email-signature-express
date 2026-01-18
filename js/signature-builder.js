@@ -10,6 +10,9 @@ const SignatureBuilder = {
   copyBtn: null,
   currentHtml: '',
 
+  // Track loaded company template
+  loadedTemplate: null,
+
   // Design options state (dark mode-safe defaults)
   designOptions: {
     logoPosition: 'left',
@@ -21,6 +24,7 @@ const SignatureBuilder = {
     linkColor: '#2980b9',
     separatorColor: '#555555',
     iconColor: '#2980b9',
+    iconStyle: 'solid',
     separatorStyle: 'pipe',
     addBackground: false,
     backgroundColor: '#ffffff',
@@ -48,6 +52,7 @@ const SignatureBuilder = {
     this.bindEvents();
     this.bindLogoEvents();
     this.bindDesignEvents();
+    this.initTemplateEvents();
 
     // Initial preview
     this.updatePreview();
@@ -115,6 +120,17 @@ const SignatureBuilder = {
     const separatorSelect = document.getElementById('separator-style');
     if (separatorSelect) {
       separatorSelect.value = opts.separatorStyle;
+    }
+
+    // Icon style toggle
+    const iconStyleBtns = document.querySelectorAll('[data-icon-style]');
+    const iconColorOption = document.getElementById('icon-color-option');
+    iconStyleBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.iconStyle === opts.iconStyle);
+      btn.setAttribute('aria-pressed', btn.dataset.iconStyle === opts.iconStyle);
+    });
+    if (iconColorOption && opts.iconStyle === 'branded') {
+      iconColorOption.classList.add('hidden');
     }
 
     // Font family
@@ -215,6 +231,9 @@ const SignatureBuilder = {
 
     // Modal
     this.initModal();
+
+    // Logo info modal
+    this.initLogoInfoModal();
   },
 
   /**
@@ -459,6 +478,31 @@ const SignatureBuilder = {
       }
     });
 
+    // Icon style toggle
+    const iconStyleBtns = document.querySelectorAll('[data-icon-style]');
+    const iconColorOption = document.getElementById('icon-color-option');
+
+    iconStyleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const style = btn.dataset.iconStyle;
+        this.designOptions.iconStyle = style;
+        Utils.savePref('iconStyle', style);
+
+        // Update button states
+        iconStyleBtns.forEach(b => {
+          b.classList.toggle('active', b.dataset.iconStyle === style);
+          b.setAttribute('aria-pressed', b.dataset.iconStyle === style);
+        });
+
+        // Show/hide icon color option based on style
+        if (iconColorOption) {
+          iconColorOption.classList.toggle('hidden', style === 'branded');
+        }
+
+        this.updatePreview();
+      });
+    });
+
     // Separator style
     const separatorSelect = document.getElementById('separator-style');
     if (separatorSelect) {
@@ -660,6 +704,174 @@ const SignatureBuilder = {
     Utils.showToast('Design reset to defaults', 'success');
   },
 
+  // ===========================================
+  // Company Template Methods
+  // ===========================================
+
+  /**
+   * Initialize template-related events
+   */
+  initTemplateEvents() {
+    const saveTemplateBtn = document.getElementById('save-template-btn');
+    const loadTemplateBtn = document.getElementById('load-template-btn');
+    const templateFileInput = document.getElementById('template-file-input');
+    const saveTemplateModal = document.getElementById('save-template-modal');
+    const saveTemplateClose = document.getElementById('save-template-close');
+    const saveTemplateCancel = document.getElementById('save-template-cancel');
+    const saveTemplateConfirm = document.getElementById('save-template-confirm');
+    const templateNameInput = document.getElementById('template-name');
+
+    // Open save modal
+    if (saveTemplateBtn) {
+      saveTemplateBtn.addEventListener('click', () => {
+        if (saveTemplateModal) {
+          saveTemplateModal.classList.add('visible');
+          saveTemplateModal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          templateNameInput?.focus();
+        }
+      });
+    }
+
+    // Close save modal
+    const closeSaveModal = () => {
+      if (saveTemplateModal) {
+        saveTemplateModal.classList.remove('visible');
+        saveTemplateModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (templateNameInput) templateNameInput.value = '';
+      }
+    };
+
+    saveTemplateClose?.addEventListener('click', closeSaveModal);
+    saveTemplateCancel?.addEventListener('click', closeSaveModal);
+
+    // Close on backdrop click
+    saveTemplateModal?.addEventListener('click', (e) => {
+      if (e.target === saveTemplateModal) closeSaveModal();
+    });
+
+    // Close on Escape
+    saveTemplateModal?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSaveModal();
+    });
+
+    // Confirm save
+    saveTemplateConfirm?.addEventListener('click', () => {
+      const templateName = templateNameInput?.value.trim() || 'Company Template';
+      const formData = Utils.getFormData(this.form);
+
+      Utils.exportCompanyTemplate(this.designOptions, formData, templateName);
+      Utils.showToast(`Template "${templateName}" saved!`, 'success');
+      closeSaveModal();
+    });
+
+    // Load template button triggers file input
+    if (loadTemplateBtn && templateFileInput) {
+      loadTemplateBtn.addEventListener('click', () => {
+        templateFileInput.click();
+      });
+    }
+
+    // Handle file selection
+    if (templateFileInput) {
+      templateFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+          const text = await file.text();
+          const template = Utils.parseCompanyTemplate(text);
+
+          if (!template) {
+            Utils.showToast('Invalid template file', 'error');
+            return;
+          }
+
+          this.applyTemplate(template);
+          Utils.showToast(`Template "${template.templateName || 'Unnamed'}" loaded!`, 'success');
+        } catch (error) {
+          console.error('Failed to load template:', error);
+          Utils.showToast('Failed to load template file', 'error');
+        }
+
+        // Reset file input so same file can be selected again
+        templateFileInput.value = '';
+      });
+    }
+  },
+
+  /**
+   * Apply a loaded template to the form
+   * @param {Object} template - Parsed template data
+   */
+  applyTemplate(template) {
+    this.loadedTemplate = template;
+
+    // Apply design options
+    if (template.design) {
+      this.designOptions = { ...this.designOptions, ...template.design };
+
+      // Save to localStorage
+      Utils.saveAllPrefs(this.designOptions);
+
+      // Apply to UI
+      this.applyPreferencesToUI();
+
+      // Handle logo preview if there's logo data
+      if (template.design.logoData) {
+        this.showLogoPreview(template.design.logoData);
+        this.switchLogoTab('upload');
+      } else if (template.design.logoUrl) {
+        const logoUrlInput = document.getElementById('logo-url');
+        if (logoUrlInput) logoUrlInput.value = template.design.logoUrl;
+        this.switchLogoTab('url');
+      }
+    }
+
+    // Apply company fields
+    if (template.companyFields) {
+      Utils.companyFieldKeys.forEach(key => {
+        const input = document.getElementById(key);
+        if (input && template.companyFields[key]) {
+          input.value = template.companyFields[key];
+
+          // Trigger visibility of clear button
+          const clearBtn = input.parentElement?.querySelector('.clear-button');
+          if (clearBtn) {
+            clearBtn.classList.add('visible');
+            input.classList.add('has-value');
+          }
+        }
+      });
+    }
+
+    // Update status indicator
+    this.updateTemplateStatus(template.templateName);
+
+    // Update preview
+    this.updatePreview();
+  },
+
+  /**
+   * Update the template status indicator
+   * @param {string} templateName - Name of loaded template (or null to clear)
+   */
+  updateTemplateStatus(templateName) {
+    const indicator = document.getElementById('template-indicator');
+    if (!indicator) return;
+
+    if (templateName) {
+      indicator.textContent = templateName;
+      indicator.classList.remove('inactive');
+      indicator.classList.add('active');
+    } else {
+      indicator.textContent = 'No template loaded';
+      indicator.classList.remove('active');
+      indicator.classList.add('inactive');
+    }
+  },
+
   /**
    * Initialize clear buttons on inputs
    */
@@ -828,6 +1040,75 @@ const SignatureBuilder = {
   },
 
   /**
+   * Initialize logo info modal
+   */
+  initLogoInfoModal() {
+    const modal = document.getElementById('logo-info-modal');
+    const modalContent = modal?.querySelector('.modal');
+    const infoBtn = document.getElementById('logo-info-btn');
+    const closeBtn = document.getElementById('logo-info-close');
+
+    if (!modal || !infoBtn) return;
+
+    // Get focusable elements inside modal
+    const getFocusableElements = () => {
+      return modalContent.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+    };
+
+    // Open modal
+    infoBtn.addEventListener('click', () => {
+      modal.classList.add('visible');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    });
+
+    // Close modal
+    const closeModal = () => {
+      modal.classList.remove('visible');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      infoBtn.focus();
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Keyboard handling - Escape and focus trap
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      // Focus trap - Tab key
+      if (e.key === 'Tab') {
+        const focusable = getFocusableElements();
+        const firstFocusable = focusable[0];
+        const lastFocusable = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+          }
+        }
+      }
+    });
+  },
+
+  /**
    * Update the live preview
    */
   updatePreview() {
@@ -848,6 +1129,7 @@ const SignatureBuilder = {
       linkColor: this.designOptions.linkColor,
       separatorColor: this.designOptions.separatorColor,
       iconColor: this.designOptions.iconColor,
+      iconStyle: this.designOptions.iconStyle,
       separatorStyle: this.designOptions.separatorStyle,
       logoPosition: this.designOptions.logoPosition,
       logoSize: this.designOptions.logoSize,
